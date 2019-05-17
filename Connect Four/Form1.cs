@@ -32,6 +32,7 @@ namespace Connect_Four
         PictureBox ball = null;
         int loc = -1;
         int lastoffset = 0;
+        int ballCounter = 0;
 
         public Form1()
         {
@@ -43,10 +44,13 @@ namespace Connect_Four
         {
             PictureBox newBall = new PictureBox();
             newBall.SizeMode = PictureBoxSizeMode.AutoSize;
-            newBall.Image = (Image)Resources.ResourceManager.GetObject("Red");
+            if (ballCounter % 2 == 0)
+                newBall.Image = (Image)Resources.ResourceManager.GetObject("Green");
+            else
+                newBall.Image = (Image)Resources.ResourceManager.GetObject("Yellow");
             newBall.MouseClick += PictureBox1_MouseClick;
             newBall.Visible = false;
-
+            ballCounter++;
             ball = newBall;
             pictureBox1.Controls.Add(newBall);
             if ((loc == -1) || (CanPlace(loc) == -2))
@@ -133,6 +137,8 @@ namespace Connect_Four
 
         private int InsertBall(int where)
         {
+            if (where == -1 || (where != -1) && (where > 6))
+                return -1;
             for (int i = 0; i < jaggedArray3[where].Length; i++)
             {
                 if (jaggedArray3[where][i] == 0)
@@ -150,16 +156,23 @@ namespace Connect_Four
             int height = InsertBall(loc);
             if (height == -1)
                 return;
+
             PictureBox KeepBall = ball;
             int offset = 0;
-           
             ball = null;
             offset = (height - 1) * 4;
-            while (KeepBall.Location.Y < (pictureBox1.Size.Height - (KeepBall.Size.Height * height) - (14 * height) - offset))
+            int goal = (pictureBox1.Size.Height - (KeepBall.Size.Height * height) - (14 * height) - offset);
+            int steps = 16;
+            while (KeepBall.Location.Y < goal)
             {
-                KeepBall.Location = new Point(KeepBall.Location.X, KeepBall.Location.Y + 1);
+                int newY = KeepBall.Location.Y + (int)steps;
+                if (newY > goal)
+                    KeepBall.Location = new Point(KeepBall.Location.X, goal);
+                else
+                    KeepBall.Location = new Point(KeepBall.Location.X, KeepBall.Location.Y + steps);
                 wait(1);
             }
+            
             CreateBall();
         }
     }
