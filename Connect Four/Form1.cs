@@ -33,6 +33,7 @@ namespace Connect_Four
         int loc = -1;
         int lastoffset = 0;
         int ballCounter = 0;
+        int round = 0;
 
         public Form1()
         {
@@ -43,19 +44,21 @@ namespace Connect_Four
         private void CreateBall()
         {
             PictureBox newBall = new PictureBox();
+            newBall.Name = "Ball";
             newBall.SizeMode = PictureBoxSizeMode.AutoSize;
             if (ballCounter % 2 == 0)
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Green");
             else
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Yellow");
+            newBall.Image.Tag = ballCounter.ToString();
             newBall.MouseClick += PictureBox1_MouseClick;
             newBall.Visible = false;
-            ballCounter++;
             ball = newBall;
             pictureBox1.Controls.Add(newBall);
+            ballCounter++;
             if ((loc == -1) || (CanPlace(loc) == -2))
             {
-                Debug.WriteLine("Not appear");
+                //Debug.WriteLine("Not appear");
                 return;
             }
             newBall.Visible = true;
@@ -139,16 +142,99 @@ namespace Connect_Four
         {
             if (where == -1 || (where != -1) && (where > 6))
                 return -1;
+
             for (int i = 0; i < jaggedArray3[where].Length; i++)
             {
                 if (jaggedArray3[where][i] == 0)
                 {
-                    jaggedArray3[where][i] = 1;
+                    if (ballCounter % 2 == 0)
+                        jaggedArray3[where][i] = 1;
+                    else
+                        jaggedArray3[where][i] = 2;
                     return i+1;
                 }
             }
+
             return -1;
         }
+
+        private void ResetBoard()
+        {
+            round++;
+            for (int i = 0; i < jaggedArray3.Length; i++)
+            {
+                for (int j = 0; j < jaggedArray3[i].Length; j++)
+                {
+                    jaggedArray3[i][j] = 0;
+                }
+            }
+            pictureBox1.Controls.Clear();
+            ball = null;
+            loc = -1;
+            lastoffset = 0;
+            ballCounter = round;
+
+        }
+
+        private void CheckGameState()
+        {
+            int lastInt;
+            int c;
+            int winner = 0;
+            //Horizontal
+            for (int i = 0; i < jaggedArray3[0].Length; i++)
+            {
+                lastInt = -1;
+                c = 1;
+                for (int j = 0; j < jaggedArray3.Length; j++)
+                {
+                    if (jaggedArray3[j][i] != 0)
+                    {
+                        if (lastInt == jaggedArray3[j][i])
+                            c++;
+                        else
+                            c = 1;
+                        lastInt = jaggedArray3[j][i];
+                    }
+                    else
+                        c = 1;
+                    if (c == 4)
+                        winner = 1;//MessageBox.Show("Winner Horizontal");
+                }
+            }
+            //Vertical
+            for (int i = 0; i < jaggedArray3.Length; i++)
+            {
+                lastInt = -1;
+                c = 1;
+                for (int j = 0; j < jaggedArray3[i].Length; j++)
+                {
+                    if (jaggedArray3[i][j] != 0)
+                    {
+                        if (lastInt == jaggedArray3[i][j])
+                            c++;
+                        else
+                            c = 1;
+                        lastInt = jaggedArray3[i][j];
+                    }
+                    else
+                        c = 1;
+                    if (c == 4)
+                        winner = 1;//MessageBox.Show("Winner Vertical");
+                }
+            }
+
+            if (winner == 1)
+            {
+                if (ballCounter % 2 == 0)
+                    MessageBox.Show("Yellow Wins!");
+                else
+                    MessageBox.Show("Green Wins!");
+                ResetBoard();
+            }
+
+        }
+
         private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
         {
             if (ball == null)
@@ -156,7 +242,6 @@ namespace Connect_Four
             int height = InsertBall(loc);
             if (height == -1)
                 return;
-
             PictureBox KeepBall = ball;
             int offset = 0;
             ball = null;
@@ -172,7 +257,8 @@ namespace Connect_Four
                     KeepBall.Location = new Point(KeepBall.Location.X, KeepBall.Location.Y + steps);
                 wait(1);
             }
-            
+
+            CheckGameState();
             CreateBall();
         }
     }
