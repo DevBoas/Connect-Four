@@ -305,14 +305,14 @@ namespace Connect_Four
             {
                 if (ballCounter % 2 == 0)
                 {
-                    MessageBox.Show(how + " Yellow Wins!");
+                    MessageBox.Show(how + "Yellow Wins this round!");
                     int score = Convert.ToInt32(Score2.Text.Substring(8));
                     score++;
                     Score2.Text = Score2.Text.Substring(0, 8) + score.ToString();
                 }
                 else
                 {
-                    MessageBox.Show(how + " Green Wins!");
+                    MessageBox.Show(how + "Green Wins this round!");
                     int score = Convert.ToInt32(Score1.Text.Substring(7));
                     score++;
                     Score1.Text = Score1.Text.Substring(0, 7) + score.ToString();
