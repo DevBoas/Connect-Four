@@ -192,28 +192,25 @@ namespace Connect_Four
             {
                 lastInt = -1;
                 c = 1;
-                if (j == 0)
+                for (int i = 0; i < jaggedArray3.Length; i++)
                 {
-                    for (int i = 0; i < jaggedArray3.Length; i++)
+                    if (jaggedArray3[i][j] != 0)
                     {
-                        if (jaggedArray3[i][j] != 0)
-                        {
-                            if (lastInt == jaggedArray3[i][j])
-                                c++;
-                            else
-                                c = 1;
-                            lastInt = jaggedArray3[i][j];
-                        }
+                        if (lastInt == jaggedArray3[i][j])
+                            c++;
                         else
-                        {
-                            lastInt = jaggedArray3[i][j];
                             c = 1;
-                        }
-                        if (c == 4)
-                        {
-                            winner = 1;
-                            how = "Winner horizontal";
-                        }
+                        lastInt = jaggedArray3[i][j];
+                    }
+                    else
+                    {
+                        lastInt = jaggedArray3[i][j];
+                        c = 1;
+                    }
+                    if (c == 4)
+                    {
+                        winner = 1;
+                        //how = "Winner horizontal";
                     }
                 }
             }
@@ -237,7 +234,7 @@ namespace Connect_Four
                     if (c == 4)
                     {
                         winner = 1;//MessageBox.Show("Winner Vertical");
-                        how = "Winner Vertical";
+                        //how = "Winner Vertical";
                     }
                 }
             }
@@ -271,7 +268,7 @@ namespace Connect_Four
                         if (c == 4)
                         {
                             winner = 1; //MessageBox.Show("Winner diagonal up");
-                            how = "Winner diagonal up";
+                            //how = "Winner diagonal up";
                         }
                     }
                     lastInt = -1;
@@ -292,7 +289,7 @@ namespace Connect_Four
                                 if (c == 4)
                                 {
                                     winner = 1;//MessageBox.Show("Winner diagonal down");
-                                    how = "Winner diagonal down";
+                                    //how = "Winner diagonal down";
                                 }
                                 lastInt = jaggedArray3[i][z];
                                 z--;
