@@ -33,6 +33,7 @@ namespace Connect_Four
         int loc = -1;
         int lastoffset = 0;
         int ballCounter = 0;
+        int boardCounter = 0;
         int round = 0;
 
         public Form1()
@@ -176,6 +177,7 @@ namespace Connect_Four
                     jaggedArray3[i][j] = 0;
                 }
             }
+            boardCounter = 0;
             pictureBox1.Controls.Clear();
             ball = null;
             loc = -1;
@@ -272,7 +274,7 @@ namespace Connect_Four
                         int y_end_down = x - 3;
                         //MessageBox.Show("X end down " + x_end_down.ToString());
                         //MessageBox.Show((jaggedArray3.Length).ToString());
-                        if (y_end_down >= 0 && x_end_down <= jaggedArray3.Length) 
+                        if (y_end_down >= 0 && x_end_down < jaggedArray3.Length) 
                         {
                             z = x;
                             //MessageBox.Show("x= " + x.ToString() + " y = " + y.ToString() + "Contains" + jaggedArray3[y][x].ToString());
@@ -329,6 +331,7 @@ namespace Connect_Four
             int height = InsertBall(loc);
             if (height == -1)
                 return;
+            boardCounter++;
             PictureBox KeepBall = ball;
             int offset = 0;
             ball = null;
@@ -346,6 +349,11 @@ namespace Connect_Four
             }
 
             CheckGameState();
+            if ((boardCounter != 0) && boardCounter == (jaggedArray3.Length * jaggedArray3[0].Length))
+            {
+                MessageBox.Show("Its a tie!");
+                ResetBoard();
+            }
             CreateBall();
         }
     }
