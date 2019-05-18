@@ -59,21 +59,15 @@ namespace Connect_Four
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Green");
             else
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Yellow");
-            newBall.Image.Tag = ballCounter.ToString();
             newBall.MouseClick += PictureBox1_MouseClick;
             newBall.Visible = false;
             ball = newBall;
             pictureBox1.Controls.Add(newBall);
             ballCounter++;
             if ((loc == -1) || (CanPlace(loc) == -2))
-            {
-                //Debug.WriteLine("Not appear");
                 return;
-            }
             newBall.Visible = true;
             newBall.Location = new Point((pictureBox1.Location.X - lastoffset) + (loc * 100), pictureBox1.Location.Y - 20);
-                
-            
         }
 
         private int CanPlace(int c)
@@ -191,25 +185,36 @@ namespace Connect_Four
             int lastInt;
             int c;
             int winner = 0;
+            string how = "";
+
             //Horizontal
-            for (int i = 0; i < jaggedArray3[0].Length; i++)
+            for (int j = 0; j < jaggedArray3[0].Length; j++)
             {
                 lastInt = -1;
                 c = 1;
-                for (int j = 0; j < jaggedArray3.Length; j++)
+                if (j == 0)
                 {
-                    if (jaggedArray3[j][i] != 0)
+                    for (int i = 0; i < jaggedArray3.Length; i++)
                     {
-                        if (lastInt == jaggedArray3[j][i])
-                            c++;
+                        if (jaggedArray3[i][j] != 0)
+                        {
+                            if (lastInt == jaggedArray3[i][j])
+                                c++;
+                            else
+                                c = 1;
+                            lastInt = jaggedArray3[i][j];
+                        }
                         else
+                        {
+                            lastInt = jaggedArray3[i][j];
                             c = 1;
-                        lastInt = jaggedArray3[j][i];
+                        }
+                        if (c == 4)
+                        {
+                            winner = 1;
+                            how = "Winner horizontal";
+                        }
                     }
-                    else
-                        c = 1;
-                    if (c == 4)
-                        winner = 1;//MessageBox.Show("Winner Horizontal");
                 }
             }
             //Vertical
@@ -230,7 +235,10 @@ namespace Connect_Four
                     else
                         c = 1;
                     if (c == 4)
+                    {
                         winner = 1;//MessageBox.Show("Winner Vertical");
+                        how = "Winner Vertical";
+                    }
                 }
             }
 
@@ -246,7 +254,7 @@ namespace Connect_Four
                         int y_end_up = y + 3;
                         int x_end_up = x + 3;
                         int z = x;
-                        
+
                         if (x_end_up < jaggedArray3[y].Length && y_end_up < jaggedArray3[x].Length)
                         {
                             for (int i = y; i <= y_end_up; i++)
@@ -264,7 +272,10 @@ namespace Connect_Four
                                     break;
                             }
                             if (c == 4)
+                            {
                                 winner = 1; //MessageBox.Show("Winner diagonal up");
+                                how = "Winner diagonal up";
+                            }
                         }
                         
                         lastInt = -1;
@@ -288,7 +299,10 @@ namespace Connect_Four
                                         c = 1;
                                     //MessageBox.Show("x= " + z.ToString() + " y = " + i.ToString() + " Contains " + jaggedArray3[i][z].ToString());
                                     if (c == 4)
+                                    {
                                         winner = 1;//MessageBox.Show("Winner diagonal down");
+                                        how = "Winner diagonal down";
+                                    }
                                     lastInt = jaggedArray3[i][z];
                                     z--;
                                 }
@@ -307,14 +321,14 @@ namespace Connect_Four
             {
                 if (ballCounter % 2 == 0)
                 {
-                    MessageBox.Show("Yellow Wins!");
+                    MessageBox.Show(how + " Yellow Wins!");
                     int score = Convert.ToInt32(Score2.Text.Substring(8));
                     score++;
                     Score2.Text = Score2.Text.Substring(0, 8) + score.ToString();
                 }
                 else
                 {
-                    MessageBox.Show("Green Wins!");
+                    MessageBox.Show(how + " Green Wins!");
                     int score = Convert.ToInt32(Score1.Text.Substring(7));
                     score++;
                     Score1.Text = Score1.Text.Substring(0, 7) + score.ToString();
