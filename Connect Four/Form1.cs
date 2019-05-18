@@ -241,79 +241,66 @@ namespace Connect_Four
                     }
                 }
             }
-
             //diagonal
             for (int y = 0; y < jaggedArray3.Length; y++)
             {
                 for (int x = 0; x < jaggedArray3[y].Length; x++)
                 {
-                   //if (y == 3) //&& x == 3)//(x == 5 && y == 0)
-                    //{
-                        lastInt = -1;
-                        c = 1;
-                        int y_end_up = y + 3;
-                        int x_end_up = x + 3;
-                        int z = x;
-
-                        if (x_end_up < jaggedArray3[y].Length && y_end_up < jaggedArray3[x].Length)
+                    
+                    lastInt = -1;
+                    c = 1;
+                    int y_end_up = y + 3;
+                    int x_end_up = x + 3;
+                    int z = x;
+                    if (y_end_up < jaggedArray3.Length && x_end_up < jaggedArray3[y].Length)
+                    {
+                        for (int i = y; i <= y_end_up; i++)
                         {
-                            for (int i = y; i <= y_end_up; i++)
+                            if (jaggedArray3[i][z] != 0)
                             {
-                                if (jaggedArray3[i][z] != 0)
-                                {
-                                    if (lastInt == jaggedArray3[i][z])
-                                        c++;
-                                    else
-                                        c = 1;
-                                    lastInt = jaggedArray3[i][z];
-                                    z++;
-                                }
+                                if (lastInt == jaggedArray3[i][z])
+                                    c++;
                                 else
-                                    break;
+                                    c = 1;
+                                lastInt = jaggedArray3[i][z];
+                                z++;
                             }
-                            if (c == 4)
-                            {
-                                winner = 1; //MessageBox.Show("Winner diagonal up");
-                                how = "Winner diagonal up";
-                            }
+                            else
+                                break;
                         }
-                        
-                        lastInt = -1;
-                        c = 1;
-                        // x ^ y = x
-                        int x_end_down = y + 3;
-                        int y_end_down = x - 3;
-                        //MessageBox.Show("X end down " + x_end_down.ToString());
-                        //MessageBox.Show((jaggedArray3.Length).ToString());
-                        if (y_end_down >= 0 && x_end_down < jaggedArray3.Length) 
+                        if (c == 4)
                         {
-                            z = x;
-                            //MessageBox.Show("x= " + x.ToString() + " y = " + y.ToString() + "Contains" + jaggedArray3[y][x].ToString());
-                            for (int i = y; i <= x_end_down; i++)
-                            {
-                                if (jaggedArray3[i][z] != 0)
-                                {
-                                    if (lastInt == jaggedArray3[i][z])
-                                        c++;
-                                    else
-                                        c = 1;
-                                    //MessageBox.Show("x= " + z.ToString() + " y = " + i.ToString() + " Contains " + jaggedArray3[i][z].ToString());
-                                    if (c == 4)
-                                    {
-                                        winner = 1;//MessageBox.Show("Winner diagonal down");
-                                        how = "Winner diagonal down";
-                                    }
-                                    lastInt = jaggedArray3[i][z];
-                                    z--;
-                                }
-                                else
-                                    break;
-                            }
+                            winner = 1; //MessageBox.Show("Winner diagonal up");
+                            how = "Winner diagonal up";
                         }
-                        //MessageBox.Show("end x = " + x_end_down.ToString());
-                        //MessageBox.Show("end y = " + y_end_down.ToString());    
-                        //break;
-                    //}
+                    }
+                    lastInt = -1;
+                    c = 1;
+                    int x_end_down = y + 3;
+                    int y_end_down = x - 3;
+                    if (y_end_down >= 0 && x_end_down < jaggedArray3.Length) 
+                    {
+                        z = x;
+                        for (int i = y; i <= x_end_down; i++)
+                        {
+                            if (jaggedArray3[i][z] != 0)
+                            {
+                                if (lastInt == jaggedArray3[i][z])
+                                    c++;
+                                else
+                                    c = 1;
+                                if (c == 4)
+                                {
+                                    winner = 1;//MessageBox.Show("Winner diagonal down");
+                                    how = "Winner diagonal down";
+                                }
+                                lastInt = jaggedArray3[i][z];
+                                z--;
+                            }
+                            else
+                                break;
+                        }
+                    }
                 }
             }
 
