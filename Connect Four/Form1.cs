@@ -41,8 +41,16 @@ namespace Connect_Four
             CreateBall();
         }
 
+        private void UpdateTurnLabel()
+        {
+            if (ballCounter % 2 == 0)
+                Turn.Text = "Green's Turn!";
+            else
+                Turn.Text = "Yellow's Turn!";
+        }
         private void CreateBall()
         {
+            UpdateTurnLabel();
             PictureBox newBall = new PictureBox();
             newBall.Name = "Ball";
             newBall.SizeMode = PictureBoxSizeMode.AutoSize;
@@ -224,12 +232,91 @@ namespace Connect_Four
                 }
             }
 
+            //diagonal
+            for (int y = 0; y < jaggedArray3.Length; y++)
+            {
+                for (int x = 0; x < jaggedArray3[y].Length; x++)
+                {
+                   //if (y == 3) //&& x == 3)//(x == 5 && y == 0)
+                    //{
+                        lastInt = -1;
+                        c = 1;
+                        int y_end_up = y + 3;
+                        int x_end_up = x + 3;
+                        int z = x;
+                        
+                        if (x_end_up < jaggedArray3[y].Length && y_end_up < jaggedArray3[x].Length)
+                        {
+                            for (int i = y; i <= y_end_up; i++)
+                            {
+                                if (jaggedArray3[i][z] != 0)
+                                {
+                                    if (lastInt == jaggedArray3[i][z])
+                                        c++;
+                                    else
+                                        c = 1;
+                                    lastInt = jaggedArray3[i][z];
+                                    z++;
+                                }
+                                else
+                                    break;
+                            }
+                            if (c == 4)
+                                winner = 1; //MessageBox.Show("Winner diagonal up");
+                        }
+                        
+                        lastInt = -1;
+                        c = 1;
+                        // x ^ y = x
+                        int x_end_down = y + 3;
+                        int y_end_down = x - 3;
+                        //MessageBox.Show("X end down " + x_end_down.ToString());
+                        //MessageBox.Show((jaggedArray3.Length).ToString());
+                        if (y_end_down >= 0 && x_end_down <= jaggedArray3.Length) 
+                        {
+                            z = x;
+                            //MessageBox.Show("x= " + x.ToString() + " y = " + y.ToString() + "Contains" + jaggedArray3[y][x].ToString());
+                            for (int i = y; i <= x_end_down; i++)
+                            {
+                                if (jaggedArray3[i][z] != 0)
+                                {
+                                    if (lastInt == jaggedArray3[i][z])
+                                        c++;
+                                    else
+                                        c = 1;
+                                    //MessageBox.Show("x= " + z.ToString() + " y = " + i.ToString() + " Contains " + jaggedArray3[i][z].ToString());
+                                    if (c == 4)
+                                        winner = 1;//MessageBox.Show("Winner diagonal down");
+                                    lastInt = jaggedArray3[i][z];
+                                    z--;
+                                }
+                                else
+                                    break;
+                            }
+                        }
+                        //MessageBox.Show("end x = " + x_end_down.ToString());
+                        //MessageBox.Show("end y = " + y_end_down.ToString());    
+                        //break;
+                    //}
+                }
+            }
+
             if (winner == 1)
             {
                 if (ballCounter % 2 == 0)
+                {
                     MessageBox.Show("Yellow Wins!");
+                    int score = Convert.ToInt32(Score2.Text.Substring(8));
+                    score++;
+                    Score2.Text = Score2.Text.Substring(0, 8) + score.ToString();
+                }
                 else
+                {
                     MessageBox.Show("Green Wins!");
+                    int score = Convert.ToInt32(Score1.Text.Substring(7));
+                    score++;
+                    Score1.Text = Score1.Text.Substring(0, 7) + score.ToString();
+                }
                 ResetBoard();
             }
 
