@@ -59,7 +59,7 @@ namespace Connect_Four
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Green");
             else
                 newBall.Image = (Image)Resources.ResourceManager.GetObject("Yellow");
-            newBall.MouseClick += PictureBox1_MouseClick;
+            newBall.MouseDown += PictureBox1_MouseDown;
             newBall.Visible = false;
             ball = newBall;
             pictureBox1.Controls.Add(newBall);
@@ -322,7 +322,7 @@ namespace Connect_Four
 
         }
 
-        private void PictureBox1_MouseClick(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (ball == null)
                 return;
